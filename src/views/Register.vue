@@ -17,13 +17,7 @@
           Registe
         </v-btn>
 
-        <v-progress-linear
-          v-show="loading"
-          color="deep-purple accent-4"
-          indeterminate
-          rounded
-          height="6"
-        ></v-progress-linear>
+        <el-button>Login</el-button>
       </v-form>
     </div>
   </div>

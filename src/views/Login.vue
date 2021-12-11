@@ -1,7 +1,7 @@
 <template>
   <div class="contaniner">
     <div class="content">
-      <v-form >
+      <v-form>
         <v-text-field v-model="name" label="Name" required></v-text-field>
         <v-text-field
           v-model="password"
@@ -16,6 +16,8 @@
         >
           Login
         </v-btn>
+
+        <el-button>Login</el-button>
       </v-form>
     </div>
   </div>
