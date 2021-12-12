@@ -1,7 +1,7 @@
 import Vue from 'vue'
 
 import ElemenUI from './element'
-import './element-variables.scss'
+import './assets/scss/index.scss'
 import App from './App.vue'
 import store from './store'
 import router from './router'

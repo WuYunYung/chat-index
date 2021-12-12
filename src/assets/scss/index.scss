@@ -1,4 +1,7 @@
-$--color-primary: green;
+@import 'normalize-scss';
+@include normalize();
+
+@import './variables.scss';
 
 /* 改变 icon 字体路径变量，必需 */
 $--font-path: '~element-ui/lib/theme-chalk/fonts';
