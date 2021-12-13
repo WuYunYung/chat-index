@@ -89,36 +89,9 @@
     },
     methods: {
       onLogin() {
-        const data = localStorage.getItem('AUTHS')
-        if (data) {
-          const { phone, password } = this
-          const auths = new Map(
-            JSON.parse(data).map((auth) => [auth.phone, auth.password])
-          )
-          if (!auths.has(phone)) {
-            this.$message({
-              type: 'error',
-              message: '暂无此用户'
-            })
-            return
-          }
-          const auth = auths.get(phone)
-          if (auth.password !== password) {
-            this.$message({
-              type: 'error',
-              message: '密码错误'
-            })
-            return
-          }
-          this.$router.push({
-            path: '/'
-          })
-        } else {
-          this.$message({
-            type: 'error',
-            message: '暂无此用户'
-          })
-        }
+        this.$router.push({
+          path: '/login'
+        })
       },
       onRegister() {
         const [AUTH, AUTHS] = ['AUTH', 'AUTHS']

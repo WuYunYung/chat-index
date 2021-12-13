@@ -56,7 +56,6 @@
       const data = sessionStorage.getItem(AUTH)
       if (data) {
         this.form = JSON.parse(data)
-        sessionStorage.removeItem(AUTH)
       }
     },
     methods: {
@@ -83,6 +82,11 @@
             })
             return
           }
+
+          sessionStorage.setItem('AUTH', JSON.stringify(this.form))
+
+          this.$message.success('登录成功！')
+
           this.$router.push({
             path: '/'
           })
