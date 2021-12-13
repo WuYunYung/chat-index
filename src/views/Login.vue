@@ -1,52 +1,116 @@
 <template>
-  <div class="contaniner">
+  <div class="container">
     <div class="content">
       <div class="logo">
         <i class="iconfont icon-chat"></i>
         chat-index
       </div>
-      <el-form label-position="left" label-width="80px" :model="formLabelAlign">
-        <el-form-item label="名称">
-          <el-input v-model="formLabelAlign.name"></el-input>
+      <el-form :model="form">
+        <el-form-item>
+          <el-input
+            v-model.number="form.phone"
+            placeholder="手机号"
+            maxlength="11"
+            show-word-limit
+          ></el-input>
         </el-form-item>
-        <el-form-item label="活动区域">
-          <el-input v-model="formLabelAlign.region"></el-input>
-        </el-form-item>
-        <el-form-item label="活动形式">
-          <el-input v-model="formLabelAlign.type"></el-input>
+        <el-form-item>
+          <el-input
+            v-model="form.password"
+            type="password"
+            placeholder="密码"
+            @keydown.enter="onLogin"
+          >
+            <el-button slot="append" @click="onForget">忘记密码？</el-button>
+          </el-input>
         </el-form-item>
       </el-form>
+      <div class="buttons">
+        <el-button type="primary" round class="login" @click="onLogin">
+          登录
+        </el-button>
+        <el-button type="text" class="register" @click="onRegister">
+          新用户注册
+        </el-button>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-export default {
-  data: () => ({
-    labelPosition: 'right',
-    formLabelAlign: {
-      name: '',
-      region: '',
-      type: ''
-    }
-  }),
-  computed: {
-    valid ({ name, password }) {
-      return name && password
-    }
-  },
-  methods: {
-    handleLogin () {
-      this.$router.push({
-        path: '/'
-      })
+  export default {
+    name: 'ct-login',
+    data: () => ({
+      form: {
+        phone: '',
+        password: ''
+      }
+    }),
+    computed: {
+      valid ({ name, password }) {
+        return name && password
+      }
+    },
+    created() {
+      const AUTH = 'AUTH'
+      const data = sessionStorage.getItem(AUTH)
+      if (data) {
+        this.form = JSON.parse(data)
+        sessionStorage.removeItem(AUTH)
+      }
+    },
+    methods: {
+      onLogin() {
+        const data = localStorage.getItem('AUTHS')
+        if (data) {
+          const { phone, password } = this.form
+          const auths = new Map(
+            JSON.parse(data).map((auth) => [auth.phone, auth.password])
+          )
+          console.log(auths)
+          if (!auths.has(phone)) {
+            this.$message({
+              type: 'error',
+              message: '暂无此用户'
+            })
+            return
+          }
+          const _password = auths.get(phone)
+          if (_password !== password) {
+            this.$message({
+              type: 'error',
+              message: '密码错误'
+            })
+            return
+          }
+          this.$router.push({
+            path: '/'
+          })
+        } else {
+          this.$message({
+            type: 'error',
+            message: '暂无此用户'
+          })
+        }
+      },
+      onRegister () {
+        this.$router.push({
+          path: '/register'
+        })
+      },
+      onForget () {
+        this.$message({
+          type: 'error',
+          message: '暂无此功能'
+        })
+      }
     }
   }
-}
 </script>
 
 <style lang="scss" scoped>
-.contaniner {
+@import "src/assets/scss/variables";
+.container {
   display: flex;
   width: 100%;
   height: 100%;
@@ -54,15 +118,24 @@ export default {
   align-items: center;
   .content {
     max-width: 375px;
-    .logo{
+    .logo {
       display: flex;
       flex-flow: column;
       align-items: center;
       margin-bottom: 3rem;
       font-size: 2rem;
-      .iconfont{
+      .iconfont {
         font-size: 4rem;
         color: $--color-primary;
+      }
+    }
+    .buttons {
+      display: flex;
+      flex-flow: column;
+      align-items: center;
+      gap: 2rem;
+      .login {
+        width: 10rem;
       }
     }
   }
